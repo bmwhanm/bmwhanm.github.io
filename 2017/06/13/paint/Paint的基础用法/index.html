@@ -1,0 +1,806 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="####Paint的基础用法    学习android自定义View总是少不了事件分发,Event ,Scroller，Canvas，Paint ，    ViewDragHelper，Path，PathMeasure等等，今天先来弄一下基本的Paint的用法 基础介绍 Paint顾名思意，是android的画笔，我们需要画的绝大部分的东西都是需要Paint来 完成的，Canvas负责写文字，dr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bsdy">
+<meta property="og:url" content="http://yoursite.com/2017/06/13/paint/Paint的基础用法/index.html">
+<meta property="og:site_name" content="bsdy">
+<meta property="og:description" content="####Paint的基础用法    学习android自定义View总是少不了事件分发,Event ,Scroller，Canvas，Paint ，    ViewDragHelper，Path，PathMeasure等等，今天先来弄一下基本的Paint的用法 基础介绍 Paint顾名思意，是android的画笔，我们需要画的绝大部分的东西都是需要Paint来 完成的，Canvas负责写文字，dr">
+<meta property="og:image" content="http://yoursite.com/Users/heqiang/Desktop/myblog/myblog/source/_posts/paint/icon.png">
+<meta property="og:image" content="http://yoursite.com/Users/heqiang/Desktop/myblog/myblog/source/_posts/paint/icon2.png">
+<meta property="og:image" content="http://yoursite.com/Users/heqiang/Desktop/myblog/myblog/source/_posts/paint/icon3.png">
+<meta property="og:image" content="http://yoursite.com/Users/heqiang/Desktop/myblog/myblog/source/_posts/paint/icon4.png">
+<meta property="og:image" content="http://yoursite.com/Users/heqiang/Desktop/myblog/myblog/source/_posts/paint/icon5.png">
+<meta property="og:image" content="http://yoursite.com/Users/heqiang/Desktop/myblog/myblog/source/_posts/paint/icon6.png">
+<meta property="og:image" content="http://yoursite.com/Users/heqiang/Desktop/myblog/myblog/source/_posts/paint/icon7.png">
+<meta property="og:image" content="http://yoursite.com/Users/heqiang/Desktop/myblog/myblog/source/_posts/paint/icon8.png">
+<meta property="og:image" content="http://yoursite.com/Users/heqiang/Desktop/myblog/myblog/source/_posts/paint/icon9.png">
+<meta property="og:updated_time" content="2017-06-15T02:06:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="bsdy">
+<meta name="twitter:description" content="####Paint的基础用法    学习android自定义View总是少不了事件分发,Event ,Scroller，Canvas，Paint ，    ViewDragHelper，Path，PathMeasure等等，今天先来弄一下基本的Paint的用法 基础介绍 Paint顾名思意，是android的画笔，我们需要画的绝大部分的东西都是需要Paint来 完成的，Canvas负责写文字，dr">
+<meta name="twitter:image" content="http://yoursite.com/Users/heqiang/Desktop/myblog/myblog/source/_posts/paint/icon.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/06/13/paint/Paint的基础用法/"/>
+
+
+
+
+
+  <title> | bsdy</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">bsdy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/13/paint/Paint的基础用法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="bsdy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-13T15:20:12+08:00">
+                2017-06-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>####Paint的基础用法<br>    学习android自定义View总是少不了事件分发,Event ,Scroller，Canvas，Paint ，<br>    ViewDragHelper，Path，PathMeasure等等，今天先来弄一下基本的Paint的用法</p>
+<h5 id="基础介绍"><a href="#基础介绍" class="headerlink" title="基础介绍 "></a>基础介绍 <br></h5><pre><code>Paint顾名思意，是android的画笔，我们需要画的绝大部分的东西都是需要Paint来
+完成的，Canvas负责写文字，drawText，但是Paint负责所画文字的颜色，大小，字
+体等，Canvas负责drawLine,Paint负责线得颜色等等，不多说直接撸码。 
+先创建个Paint对象，
+mPaint = new Paint();
+mPaint.setColor(Color.YELLOW);  设置画笔的颜色，
+
+mPaint.setAntiAlias(true);设置抗锯齿，可能会影响性
+mPaint.setDither(true);//防抖动
+
+mPaint.setStyle(Paint.Style.STROKE);//描边
+mPaint.setStyle(Paint.Style.FILL);//填充
+mPaint.setStyle(Paint.Style.FILL_AND_STROKE);//描边加上填充设置画笔的样式
+
+mPaint.setStrokeWidth(1);设置画笔的笔尖的宽度
+
+mPaint.setStrokeCap((Cap cap);设置画笔的线帽，线帽是什么意思呢，线帽就是画笔的帽子。
+</code></pre><p><br></p>
+<p><img src="/Users/heqiang/Desktop/myblog/myblog/source/_posts/paint/icon.png" alt="线帽的示例"><br><br><br><br>代码如下<strong>:</strong></p>
+<pre><code>Path path = new Path();
+path.reset();
+path.moveTo(100,100);
+path.lineTo(600,100);
+mPaint.setStrokeWidth(30);
+mPaint.setColor(Color.BLUE);
+mPaint.setStrokeCap(Paint.Cap.BUTT);//没有笔帽
+canvas.drawPath(path,mPaint);
+
+
+path.reset();
+path.moveTo(100,160);
+path.lineTo(600,160);
+mPaint.setStrokeCap(Paint.Cap.ROUND);//圆角的笔帽
+canvas.drawPath(path,mPaint);
+
+path.reset();
+path.moveTo(100,220);
+path.lineTo(600,220);
+mPaint.setStrokeCap(Paint.Cap.SQUARE);//方形的笔帽
+canvas.drawPath(path,mPaint);
+</code></pre><p>由图片可得下面的两条线段都比上面没有线帽的线断多出来一段。这就是为Paint添加Cap，线帽产生的作用。<br><br></p>
+<blockquote>
+<p>   mPaint.setStrokeJoin(Join join);//设置画笔在处理两条线的交叉处如何处理。<br><br> </p>
+</blockquote>
+<p><strong>上代码：</strong> <br></p>
+<pre><code>mPaint.setStrokeWidth(30);
+mPaint.setStyle(Paint.Style.STROKE);
+Path path = new Path();
+path.reset();
+path.moveTo(40, 40);
+path.lineTo(160, 40);
+path.lineTo(40, 160);
+mPaint.setStrokeJoin(Paint.Join.BEVEL);//直线
+canvas.drawPath(path, mPaint);
+
+
+path.reset();
+path.moveTo(40, 200);
+path.lineTo(160, 200);
+path.lineTo(40, 360);
+mPaint.setStrokeJoin(Paint.Join.MITER);//锐角
+canvas.drawPath(path, mPaint);
+
+
+path.reset();
+path.moveTo(40, 400);
+path.lineTo(160, 400);
+path.lineTo(40, 560);
+mPaint.setStrokeJoin(Paint.Join.ROUND);//圆弧
+canvas.drawPath(path, mPaint);
+</code></pre><p><br><br><img src="/Users/heqiang/Desktop/myblog/myblog/source/_posts/paint/icon2.png" alt="Join的示例"></p>
+<h5 id="测量文字"><a href="#测量文字" class="headerlink" title="测量文字 "></a>测量文字 <br></h5><pre><code>来点有意思的，
+breakText(harSequence text, int start, int end,boolean measureForwards,float maxWidth,float [] measuredWidth)
+text: 是我们需要测量的文本
+start: 测量文本的的字符串的开始的位置
+end: 测量文本的字符串结束的位置
+measureForwards: 表示测量的方向，如果是true表示是从start开始测量，如果为false代表是从end开始测量
+maxWidth: 这个属性比较关键，这是我们先预估我们测量的这段文本的最大宽度是多少，如果在测量的过程中，大于这个设置的最大的宽度，那么这个时候我们就停止测量。
+measuredWidth: 如果传入的measuredWidth不为null，那么测量的结果就存储在这个数组里面。
+这个函数的返回值是测量的字符串的length
+</code></pre><p><br><br>    <strong>代码如下:</strong></p>
+<pre><code>//计算指定长度的字符串（字符长度、字符个数、显示的时候真实的长度）
+String str = &quot;this is a Test 中文&quot;;
+float measuredWidth[] = new float[1];
+int length = mPaint.breakText(str,true,800,measuredWidth);
+Log.e(&quot;TAG&quot;,&quot;mPaint.breakText() first --- length:&quot;+length +&quot; , measuredWidth :&quot;+measuredWidth[0]);
+length = mPaint.breakText(str,0,str.length() -10,true,800,measuredWidth);
+Log.e(&quot;TAG&quot;,&quot;mPaint.breakText() second --- length:&quot;+length +&quot; , measuredWidth :&quot;+measuredWidth[0]);
+</code></pre><p><br><br>    <img src="/Users/heqiang/Desktop/myblog/myblog/source/_posts/paint/icon3.png" alt="breakText的示例"></p>
+<p>再来：我们继续看看还有哪些可以测量文字</p>
+<pre><code>mPaint.(CharSequence text,int start,int end);
+text: 测量的文本
+start: 测量的文本的起始位置
+end: 测量的文本的结束的位置
+</code></pre><p><strong>上代码:</strong></p>
+<pre><code>float measureWidth = mPaint.measureText(str);
+Log.e(&quot;TAG&quot;,&quot;mPaint.measureText() first: &quot;+measureWidth);
+measureWidth = mPaint.measureText(str,0,str.length() - 10);
+Log.e(&quot;TAG&quot;,&quot;mPaint.measureText() second: &quot;+measureWidth);
+</code></pre><p><img src="/Users/heqiang/Desktop/myblog/myblog/source/_posts/paint/icon4.png" alt="measureText的示例"><br><br></p>
+<p>继续来：再看看</p>
+<pre><code>getTextBounds (String text, int start, int end,Rect bounds)
+bounds: 这个函数的返回值为void，我们传入的我们定义的bounds，然后这个方法执行完成后，我们就可以在这个bounds里面取得包容下这个文本所需要的最小的矩形。
+</code></pre><p><strong>上代码：</strong></p>
+<pre><code>//Rect bounds获取文本的矩形区域（宽高）
+Rect rect = new Rect();
+mPaint.getTextBounds(str,0,str.length(),rect);
+Log.e(&quot;TAG&quot;,&quot;mPaint.getTextBounds() first--  top:&quot;+rect.top+&quot;  ,left &quot;+rect.left+ &quot;   ,right&quot;+rect.right+&quot;  ,bottom:&quot;+rect.bottom);
+mPaint.getTextBounds(str,0,str.length()-10,rect);
+Log.e(&quot;TAG&quot;,&quot;mPaint.getTextBounds() second--  top:&quot;+rect.top+&quot;  ,left &quot;+rect.left+ &quot;   ,right&quot;+rect.right+&quot;  ,bottom:&quot;+rect.bottom);
+</code></pre><p><img src="/Users/heqiang/Desktop/myblog/myblog/source/_posts/paint/icon5.png" alt="measureText的示例"><br><br><br>好了测量文本的就暂时到这了，当然还有其他的API，我就不介绍了。<br><br><br></p>
+<h5 id="FontMetrics"><a href="#FontMetrics" class="headerlink" title="FontMetrics"></a>FontMetrics</h5><pre><code>FontMetrics这个类里面只有五个参数，分别是偷top，ascent，desent，bottom，
+leading.下面的这张图一斤想看戏的说明了这五个参数的意义，再提一点，我们获取到的
+这五个值全是基于baseLine这一条基准线得到的值，所以，baseLine就是坐标原点。
+</code></pre><p><img src="/Users/heqiang/Desktop/myblog/myblog/source/_posts/paint/icon6.png" alt=""></p>
+<pre><code>好，我们直接来写一段文字来看看
+//画一段文本
+canvas.drawText(str,0,0,mPaint);
+</code></pre><p><img src="/Users/heqiang/Desktop/myblog/myblog/source/_posts/paint/icon7.png" alt=""></p>
+<pre><code>好了不多说话，直接没画出来什么鬼？原来我们写文字是基于BaseLine来写的，这个时候
+BaseLine是0，0这个原点，所以我们写的文字直接出现在了上面，那么我们把BaseLine
+下移看看会出现吗？
+canvas.drawText(str,0,100,mPaint);
+</code></pre><p><img src="/Users/heqiang/Desktop/myblog/myblog/source/_posts/paint/icon8.png" alt=""></p>
+<pre><code>那么我们能解决什么问题呢，来个最普遍的例子，给你一条线，要求你画出的文字是让这条
+线位于你所写的文字的中间。就是我们已知centerLine，top，ascent，descent，
+bottom，求出BaseLine。
+我们已经知道top和bottom，还知道descent，因为我们所知的中线是位于top和bottom
+中间的，那么我们可得， (metrics.bottom - metrics.top) / 2 是距离的一半，
+那么我们减去底部的距离，就是中间线到baseLine的距离，所以：
+baseLineY ＝ (metrics.bottom - metrics.top) / 2 - metrics.bottom + centerY;
+那么看一下运行结果
+</code></pre><p><img src="/Users/heqiang/Desktop/myblog/myblog/source/_posts/paint/icon9.png" alt=""></p>
+<p>好了，第一篇博客先到这里吧，后面会继续介绍ColorFilter和Shader，Canvas，Path，PathMeasure，事件分发，Scroller等自定义View相关的。。。。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/09/first/" rel="next" title="first">
+                <i class="fa fa-chevron-left"></i> first
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#基础介绍"><span class="nav-number">1.</span> <span class="nav-text">基础介绍 </span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#测量文字"><span class="nav-number">2.</span> <span class="nav-text">测量文字 </span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#FontMetrics"><span class="nav-number">3.</span> <span class="nav-text">FontMetrics</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
