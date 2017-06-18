@@ -1,0 +1,761 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Paint的用法_二ColorFilter的基础用法官方文档关于ColorFilter的介绍是，这个类可以被用于修改被Paint画出的每一个像素 的颜色。并且ColorFilter是一个虚类，不能被直接使用，那么我们就看看它有哪些子类 ColorMatrixColorFilter我们先来介绍第一个子类 ColorMatrixColorFilter，这个类是通过ColorMatrix来管 理颜色的矩">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Paint的用法_二">
+<meta property="og:url" content="http://yoursite.com/2017/06/15/Paint的用法-二/index.html">
+<meta property="og:site_name" content="bsdy">
+<meta property="og:description" content="Paint的用法_二ColorFilter的基础用法官方文档关于ColorFilter的介绍是，这个类可以被用于修改被Paint画出的每一个像素 的颜色。并且ColorFilter是一个虚类，不能被直接使用，那么我们就看看它有哪些子类 ColorMatrixColorFilter我们先来介绍第一个子类 ColorMatrixColorFilter，这个类是通过ColorMatrix来管 理颜色的矩">
+<meta property="og:image" content="http://yoursite.com/2017/06/15/img/paint_2_colormartix_1.png">
+<meta property="og:image" content="http://yoursite.com/2017/06/15/img/paint_2_colormatrix_2.png">
+<meta property="og:image" content="http://yoursite.com/2017/06/15/img/paint_2_colormatrix_3.png">
+<meta property="og:image" content="http://yoursite.com/2017/06/15/img/paint_2_colormatrix_4.png">
+<meta property="og:image" content="http://yoursite.com/2017/06/15/img/paint_2_colormatrix_5.png">
+<meta property="og:image" content="http://yoursite.com/2017/06/15/img/paint_2_colormatrix_6.png">
+<meta property="og:image" content="http://yoursite.com/2017/06/15/img/paint_2_colormatrix_7.png">
+<meta property="og:image" content="http://yoursite.com/2017/06/15/img/paint_2_colormatrix_8.png">
+<meta property="og:updated_time" content="2017-06-18T14:07:34.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Paint的用法_二">
+<meta name="twitter:description" content="Paint的用法_二ColorFilter的基础用法官方文档关于ColorFilter的介绍是，这个类可以被用于修改被Paint画出的每一个像素 的颜色。并且ColorFilter是一个虚类，不能被直接使用，那么我们就看看它有哪些子类 ColorMatrixColorFilter我们先来介绍第一个子类 ColorMatrixColorFilter，这个类是通过ColorMatrix来管 理颜色的矩">
+<meta name="twitter:image" content="http://yoursite.com/2017/06/15/img/paint_2_colormartix_1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/06/15/Paint的用法-二/"/>
+
+
+
+
+
+  <title>Paint的用法_二 | bsdy</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">bsdy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/15/Paint的用法-二/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="bsdy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Paint的用法_二</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-15T10:35:42+08:00">
+                2017-06-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="Paint的用法-二"><a href="#Paint的用法-二" class="headerlink" title="Paint的用法_二"></a>Paint的用法_二</h4><h5 id="ColorFilter的基础用法"><a href="#ColorFilter的基础用法" class="headerlink" title="ColorFilter的基础用法"></a>ColorFilter的基础用法</h5><pre><code>官方文档关于ColorFilter的介绍是，这个类可以被用于修改被Paint画出的每一个像素
+的颜色。并且ColorFilter是一个虚类，不能被直接使用，那么我们就看看它有哪些子类
+</code></pre><h6 id="ColorMatrixColorFilter"><a href="#ColorMatrixColorFilter" class="headerlink" title="ColorMatrixColorFilter"></a>ColorMatrixColorFilter</h6><pre><code>我们先来介绍第一个子类 ColorMatrixColorFilter，这个类是通过ColorMatrix来管
+理颜色的矩阵变换的，一个像素是有ARGB是个颜色通道的值构成的。显示这些图片，首先要
+把这些值加载到内存中，修改像素值，需要一个4*5的ColorMatrix，我们在代码中修改这
+个float类型的矩阵，先来个例子，然后再慢慢解释。
+</code></pre><p>上代码：</p>
+<pre><code>//先画一张没有设置颜色矩阵的原图
+mPaint.setColorFilter(null);
+canvas.drawBitmap(mBitmap, null, mRect, mPaint);
+//色彩增强
+ColorMatrix matrix = new ColorMatrix(new float[]{
+        1.2f, 0, 0, 0, 0,
+        0, 1.2f, 0, 0, 0,
+        0, 0, 1.2f, 0, 0,
+        0, 0, 0, 1f, 0
+});
+mPaint.setColorFilter(new ColorMatrixColorFilter(matrix));
+canvas.translate(0, 400);
+canvas.drawBitmap(mBitmap, null, mRect, mPaint);
+</code></pre><p>上个图：<br> <img src="../img/paint_2_colormartix_1.png" alt=""></p>
+<pre><code>可从上面的图片对比可以看的出来，下面的图片的色彩比上面的更鲜艳，那么下面的每个像素点的值是怎么通过矩阵的运算得到的呢？这是我们的4*5的矩阵
+[ a, b, c, d, e,                [r
+  f, g, h, i, j,                  g
+  k, l, m, n, o,        *         b
+  p, q, r, s, t ]                 a]
+那么我们得到的颜色值为
+    R’ = a*R + b*G + c*B + d*A + e;
+    G’ = f*R + g*G + h*B + i*A + j;
+    B’ = k*R + l*G + m*B + n*A + o;
+    A’ = p*R + q*G + r*B + s*A + t;
+    根据这个公式，我们能够得到上面的矩阵计算，我们是分别把像素的RGB的值，全部乘
+    以1.2，所以得到的是色彩的增强。
+</code></pre><p>再来个反相变换，反相变换就是把相应的颜色值取反，就是拿255减去现在的值，根据这个结果，我们得到矩阵就是：</p>
+<pre><code>//全部取成相反的值，就是拿255减去现在的值
+//        ColorMatrix matrix = new ColorMatrix(new float[]{
+//                -1f, 0, 0, 0, 255,
+//                0, -1f, 0, 0, 255,
+//                0, 0, -1f, 0, 255,
+//                0, 0, 0, 1f, 0
+//        });
+</code></pre><p>得到的图片是<br> <img src="../img/paint_2_colormatrix_2.png" alt=""><br> <br><br>再来张黑白照，代码：</p>
+<pre><code>ColorMatrix matrix = new ColorMatrix(new float[]{
+                0.213f, 0.715f, 0.072f, 0, 0,
+                0.213f, 0.715f, 0.072f, 0, 0,
+                0.213f, 0.715f, 0.072f, 0, 0,
+                0, 0, 0, 1f, 0
+        });
+</code></pre><p>黑白照：<br> <img src="../img/paint_2_colormatrix_3.png" alt=""><br>来张复古照片：</p>
+<pre><code>ColorMatrix matrix = new ColorMatrix(new float[]{
+                1 / 2f, 1 / 2f, 1 / 2f, 0, 0,
+                1 / 3f, 1 / 3f, 1 / 3f, 0, 0,
+                1 / 4f, 1 / 4f, 1 / 4f, 0, 0,
+                0, 0, 0, 1f, 0,
+        });
+</code></pre><p><img src="../img/paint_2_colormatrix_4.png" alt="">           </p>
+<p>好了，ColorMatrix的矩阵变换就到这吧，继续看看其他的API。</p>
+<pre><code>setScale(float rScale, float gScale, float bScale, float aScale)
+rScale:就是我们那个4*5矩阵的变换的R的值
+其他的参数都类似，那么设置了这个函数后，其实我们得到的ColorMatrix是
+[rScale,0,0,0,0
+    0,gScale,0,0,0
+    0,0,bScale,0,0
+    0,0,0,aScale,0]
+
+setSaturation (float sat);//设置色彩的饱和度
+setRotate(int axis, float degrees);//设置色彩的旋转
+axis:是围绕那个色彩轴旋转，一共有RGB三个轴，0代表R轴，1代表G轴，2代表B轴
+degrees:是围绕这个轴旋转的角度
+</code></pre><p>上代码：</p>
+<pre><code>ColorMatrix matrix = new ColorMatrix();
+matrix.setRotate(0,120);
+</code></pre><p><img src="../img/paint_2_colormatrix_5.png" alt="">    </p>
+<h5 id="LightingColorFilter"><a href="#LightingColorFilter" class="headerlink" title="LightingColorFilter"></a>LightingColorFilter</h5><pre><code>LightingColorFilter的构造函数是由两个参数构成LightingColorFilter(int mul, int add),
+这个类就是提供一种相对简单的方式来操作颜色矩阵的变换其中，mul和add的意义可以有
+下面的公式得到：
+R&apos; = R * colorMultiply.R + colorAdd.R
+G&apos; = G * colorMultiply.G + colorAdd.G
+B&apos; = B * colorMultiply.B + colorAdd.B
+</code></pre><p>代码如下：</p>
+<pre><code>LightingColorFilter colorFilter = new LightingColorFilter(0xffffff,0xff00ff);
+mPaint.setColorFilter(colorFilter);
+canvas.translate(0, 400);
+canvas.drawBitmap(mBitmap, null, mRect, mPaint);
+</code></pre><p><img src="../img/paint_2_colormatrix_6.png" alt="">    </p>
+<h5 id="PorterDuffColorFilter"><a href="#PorterDuffColorFilter" class="headerlink" title="PorterDuffColorFilter"></a>PorterDuffColorFilter</h5><pre><code>关于PoterDuffColorFilter这个类，要学习这个类，必须要了解他的
+</code></pre><p> <img src="../img/paint_2_colormatrix_7.png" alt=""><br> <img src="../img/paint_2_colormatrix_8.png" alt="">           </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/15/Paint的基础用法/" rel="next" title="Paint的基础用法">
+                <i class="fa fa-chevron-left"></i> Paint的基础用法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/15/Canvas的基础用法/" rel="prev" title="Canvas的基础用法">
+                Canvas的基础用法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Paint的用法-二"><span class="nav-number">1.</span> <span class="nav-text">Paint的用法_二</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ColorFilter的基础用法"><span class="nav-number">1.1.</span> <span class="nav-text">ColorFilter的基础用法</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#ColorMatrixColorFilter"><span class="nav-number">1.1.1.</span> <span class="nav-text">ColorMatrixColorFilter</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#LightingColorFilter"><span class="nav-number">1.2.</span> <span class="nav-text">LightingColorFilter</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#PorterDuffColorFilter"><span class="nav-number">1.3.</span> <span class="nav-text">PorterDuffColorFilter</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

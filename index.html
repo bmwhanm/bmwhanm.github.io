@@ -201,7 +201,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Home
+            Startseite
           </a>
         </li>
       
@@ -211,7 +211,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archives
+            Archiv
           </a>
         </li>
       
@@ -254,6 +254,770 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/15/Paint的Gradient的用法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="bsdy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/15/Paint的Gradient的用法/" itemprop="url">Paint的Gradient的用法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-15T13:53:17+08:00">
+                2017-06-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Paint的Gradient的用法"><a href="#Paint的Gradient的用法" class="headerlink" title="Paint的Gradient的用法"></a>Paint的Gradient的用法</h4><h5 id="shader的基本介绍"><a href="#shader的基本介绍" class="headerlink" title="shader的基本介绍"></a>shader的基本介绍</h5><pre><code>shader是一个在绘制的过程中能够水平的平分颜色的一个基类，通过Shader的子类的实现
+来给Paint设置Shader，设置过之后，绘制任何对象时都会带着这个Shader的颜色。
+</code></pre><h5 id="BitmapShader"><a href="#BitmapShader" class="headerlink" title="BitmapShader"></a>BitmapShader</h5><pre><code>这是一个非常有用的类，下面我会介绍一些这个类的基本的用法，中间会包括一些
+Shader的基本用法，都在这个介绍类的里面了，下面可 is hi，我们首先看看这个类的
+构造函数，然后直接使用，看看会有什么奇妙的东西发生。这个Shader作为纹理被用来
+绘制Bitmap看看构造方法.
+</code></pre><ul>
+<li><p>REPEAT</p>
+<pre><code>mRect = new RectF(0,0,200,200);
+mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.girl);
+BitmapShader shader = new BitmapShader(mBitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+mPaint.setShader(shader);
+canvas.drawRect(0,0,getWidth(),getHeight() ,mPaint);
+</code></pre><p><img src="/img/paint_3_shader_1.png" alt=""><br><br></p>
+<pre><code>根据图片，我们看到绘制出来的不是单独的的一张照片，而是单张照片的重复，这就
+涉及到在上面的代码中，我们没有提到的Shader.TileMode这个内部类。这个类内
+部有三个值，分别是CLAMP，REPEAT，MIRROR。其中CLAMP代表的是重复绘制这个
+Shader的边缘的像素，当超出这个Shader的原始界限的时候，REPEAT就是重复，
+MIRROR就是镜像。这个三个值的不用多说，看看代码的效果就明白了。
+</code></pre><p>上代码：</p>
+</li>
+<li><p>CLAMP</p>
+<pre><code>mRect = new RectF(0,0,200,200);
+mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.girl);
+BitmapShader shader = new BitmapShader(mBitmap,Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+mPaint.setShader(shader);
+canvas.drawRect(0,0,getWidth(),getHeight() ,mPaint);
+</code></pre></li>
+</ul>
+<p><img src="/img/paint_3_shader_2.png" alt="这是CLAMP的效果"></p>
+<ul>
+<li><p>MIRROR</p>
+<pre><code>mRect = new RectF(0,0,200,200);
+mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.girl);
+BitmapShader shader = new BitmapShader(mBitmap,Shader.TileMode. MIRROR, Shader.TileMode. MIRROR);
+mPaint.setShader(shader);
+canvas.drawRect(0,0,getWidth(),getHeight() ,mPaint);
+</code></pre></li>
+</ul>
+<p><img src="/img/paint_3_shader_3.png" alt="这是CLAMP的效果"></p>
+<pre><code>解释一下构造方法：
+BitmapShader(Bitmap bitmap, Shader.TileMode tileX, Shader.TileMode tileY)
+bitmap：就是你给这个BitmapShader设置的图片
+tileX：就是当这个Shader超出这个图像的原始的边界的时候，给这个Shader设置的X轴方向的拉伸规则
+tileY：同理上面的tileX
+</code></pre><p><br></p>
+<h5 id="Matrix"><a href="#Matrix" class="headerlink" title="Matrix"></a>Matrix</h5><pre><code>下面再来一个比较有点意思的类，Matrix，矩阵。Matrix是一个为了转换坐标持有一个
+3*3的矩阵的一个类。因为这里是在Shader的知识里面，我们就介绍一点基本知识就行，
+Matrix的构造方法没什么要看的，大家一看就明白，分别是Matrix()，Matrix(Matrix src)
+然后看看他的setScale(float sx, float sy)方法，sx，sy分别表示X，Y轴的缩放比例。
+我们在Shader的setLocalMatrix (Matrix localM)里面会用到矩阵的变换，那么
+</code></pre><p>上代码：</p>
+<pre><code>BitmapShader shader = new BitmapShader(mBitmap, Shader.TileMode.MIRROR, Shader.TileMode.MIRROR);
+Matrix matrix = new Matrix();
+matrix.setScale(1.5f,0.5f);
+shader.setLocalMatrix(matrix);
+mPaint.setShader(shader);        
+canvas.drawRect(0,0,getWidth(),getHeight() ,mPaint);
+</code></pre><p><img src="/img/paint_3_shader_4.png" alt=""></p>
+<pre><code>从上面的图可以看出，X轴放大了1.5倍，Y轴缩小了0.5倍
+
+下面我们接着看看Matrix的其它方法setTranslate(float dx, float dy)，设置    矩阵沿着X，Y轴分别平移dx，dy。dx为正，图片就右移，反之左移，dy为正图片下移，
+反之上移
+</code></pre><p>上代码：</p>
+<pre><code>BitmapShader shader = new BitmapShader(mBitmap, Shader.TileMode.MIRROR, Shader.TileMode.MIRROR);
+Matrix matrix = new Matrix();
+matrix.setTranslate(50,50);
+shader.setLocalMatrix(matrix);
+mPaint.setShader(shader);        
+canvas.drawRect(0,0,getWidth(),getHeight() ,mPaint);
+</code></pre><p><img src="/img/paint_3_shader_5.png" alt=""></p>
+<pre><code>setRotate(float degrees),设置矩阵围绕着原点旋转degrees度。
+setSkew(float kx, float ky)，设置矩阵的X，Y方向的倾斜度。
+这两个方法，我就不运行了，大家自己试一下。
+好了，到这里我就把BitmapShader介绍的差不多了，也介绍了Shader的setLocalMatrix(matrix)方法
+顺便说了一点Matrix类，下面回归主题，看看其它的Shader的子类。
+</code></pre><h5 id="LinearGradient"><a href="#LinearGradient" class="headerlink" title="LinearGradient"></a>LinearGradient</h5><pre><code>线性渐变，比较简单，把构造方法弄明白就行了
+LinearGradient(float x0, float y0, float x1, float y1, int[] colors, float[] positions, Shader.TileMode tile)
+x0,y0,x1,y1 : 代表这个颜色变化的起点位置和终点位置
+colors: 是颜色的变化的范围
+positions ：是每个颜色的在总变化的范围所占的所有的值加起来等于1 。类似于权重,可以为null，为null的话就是每个颜色所占的比重相同
+tile：是这个图形的拉伸规则，参看BitmapShader
+</code></pre><p>上代码：</p>
+<pre><code>LinearGradient gradient = new LinearGradient(0,200,200,200,new int[]{Color.RED,Color.YELLOW,Color.GREEN},null, Shader.TileMode.CLAMP);
+mPaint.setShader(gradient);
+canvas.drawRect(0,0,getWidth(),getHeight(),mPaint);
+</code></pre><p><img src="/img/paint_3_shader_6.png" alt=""></p>
+<h5 id="RadialGradient"><a href="#RadialGradient" class="headerlink" title="RadialGradient"></a>RadialGradient</h5><pre><code>径向渐变，直接看
+RadialGradient(float centerX, float centerY, float radius, int[] colors, float[] stops, Shader.TileMode tileMode)
+centerX，centerY，radius，是画圆的三个要素，中心坐标加半径。
+colors：是颜色的变化范围
+stops：这个数组里面的数对应的是颜色的变化范围到什么位置停止，就是这个数组如果
+是｛0.1f,0.2f,0.3f｝,假设colors是｛Color.RED,Color.YELLOW,Color.GREEN｝
+那么红色的变化范围是0～0.1，黄色的变化0.1f~0.2f,绿色作为最后一个颜色，会自动
+填充到1.0f
+</code></pre><p>上代码：</p>
+<pre><code>RadialGradient gradient = new RadialGradient(200,200,100,new int[]{Color.RED,Color.YELLOW,Color.GREEN},new float[]{0.1f,0.2f,0.3f}, Shader.TileMode.REPEAT);
+mPaint.setShader(gradient);
+canvas.drawRect(0,0,getWidth(),getHeight(),mPaint);
+</code></pre><p><img src="/img/paint_3_shader_7.png" alt=""></p>
+<h5 id="SweepGradient"><a href="#SweepGradient" class="headerlink" title="SweepGradient"></a>SweepGradient</h5><pre><code>扫描渐变
+SweepGradient(float cx, float cy, int[] colors, float[] positions)
+cx：扫描渐变的中心点的X轴的坐标
+cy：扫描渐变的中心点的Y轴的坐标
+colors：渐变的颜色的范围
+position：渐变的颜色数组对应的渐变的位置
+</code></pre><p>上代码：</p>
+<pre><code>SweepGradient gradient = new SweepGradient(200,200,new int[]{Color.RED,Color.YELLOW,Color.GREEN,Color.CYAN},null);
+mPaint.setShader(gradient);
+canvas.drawCircle(200,200,100,mPaint);
+</code></pre><p><img src="/img/paint_3_shader_8.png" alt=""></p>
+<h5 id="ComposeShader"><a href="#ComposeShader" class="headerlink" title="ComposeShader"></a>ComposeShader</h5><pre><code>组合渐变，就是通过Xfermode或者PorterDuff.Mode的方式结合两种Shader，这个类
+的重点就在于结合的方式，具体的两个类，请大家参看我的其它文章。
+下面我们直接看一下代码
+
+BitmapShader bitmapShader = new BitmapShader(mBitmap, Shader.TileMode.MIRROR, Shader.TileMode.MIRROR);
+LinearGradient linearGradient = new LinearGradient(0,200,200,200,new int[]{Color.RED,Color.YELLOW,Color.GREEN},null, Shader.TileMode.CLAMP);
+ComposeShader composeShader = new ComposeShader(linearGradient, bitmapShader, PorterDuff.Mode.OVERLAY);
+mPaint.setShader(composeShader);
+canvas.drawRect(0, 0, getWidth(), getHeight(), mPaint);
+</code></pre><p><img src="/img/paint_3_shader_9.png" alt=""></p>
+<pre><code>好了，这篇文章就到此结束了。
+</code></pre>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/15/PathMeasure的基础用法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="bsdy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/15/PathMeasure的基础用法/" itemprop="url">PathMeasure的基础用法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-15T11:00:21+08:00">
+                2017-06-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/15/Path的基础用法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="bsdy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/15/Path的基础用法/" itemprop="url">Path的基础用法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-15T11:00:02+08:00">
+                2017-06-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/15/Canvas的基础用法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="bsdy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/15/Canvas的基础用法/" itemprop="url">Canvas的基础用法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-15T10:59:44+08:00">
+                2017-06-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/15/Paint的用法-二/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="bsdy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/15/Paint的用法-二/" itemprop="url">Paint的用法_二</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-15T10:35:42+08:00">
+                2017-06-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Paint的用法-二"><a href="#Paint的用法-二" class="headerlink" title="Paint的用法_二"></a>Paint的用法_二</h4><h5 id="ColorFilter的基础用法"><a href="#ColorFilter的基础用法" class="headerlink" title="ColorFilter的基础用法"></a>ColorFilter的基础用法</h5><pre><code>官方文档关于ColorFilter的介绍是，这个类可以被用于修改被Paint画出的每一个像素
+的颜色。并且ColorFilter是一个虚类，不能被直接使用，那么我们就看看它有哪些子类
+</code></pre><h6 id="ColorMatrixColorFilter"><a href="#ColorMatrixColorFilter" class="headerlink" title="ColorMatrixColorFilter"></a>ColorMatrixColorFilter</h6><pre><code>我们先来介绍第一个子类 ColorMatrixColorFilter，这个类是通过ColorMatrix来管
+理颜色的矩阵变换的，一个像素是有ARGB是个颜色通道的值构成的。显示这些图片，首先要
+把这些值加载到内存中，修改像素值，需要一个4*5的ColorMatrix，我们在代码中修改这
+个float类型的矩阵，先来个例子，然后再慢慢解释。
+</code></pre><p>上代码：</p>
+<pre><code>//先画一张没有设置颜色矩阵的原图
+mPaint.setColorFilter(null);
+canvas.drawBitmap(mBitmap, null, mRect, mPaint);
+//色彩增强
+ColorMatrix matrix = new ColorMatrix(new float[]{
+        1.2f, 0, 0, 0, 0,
+        0, 1.2f, 0, 0, 0,
+        0, 0, 1.2f, 0, 0,
+        0, 0, 0, 1f, 0
+});
+mPaint.setColorFilter(new ColorMatrixColorFilter(matrix));
+canvas.translate(0, 400);
+canvas.drawBitmap(mBitmap, null, mRect, mPaint);
+</code></pre><p>上个图：<br> <img src="../img/paint_2_colormartix_1.png" alt=""></p>
+<pre><code>可从上面的图片对比可以看的出来，下面的图片的色彩比上面的更鲜艳，那么下面的每个像素点的值是怎么通过矩阵的运算得到的呢？这是我们的4*5的矩阵
+[ a, b, c, d, e,                [r
+  f, g, h, i, j,                  g
+  k, l, m, n, o,        *         b
+  p, q, r, s, t ]                 a]
+那么我们得到的颜色值为
+    R’ = a*R + b*G + c*B + d*A + e;
+    G’ = f*R + g*G + h*B + i*A + j;
+    B’ = k*R + l*G + m*B + n*A + o;
+    A’ = p*R + q*G + r*B + s*A + t;
+    根据这个公式，我们能够得到上面的矩阵计算，我们是分别把像素的RGB的值，全部乘
+    以1.2，所以得到的是色彩的增强。
+</code></pre><p>再来个反相变换，反相变换就是把相应的颜色值取反，就是拿255减去现在的值，根据这个结果，我们得到矩阵就是：</p>
+<pre><code>//全部取成相反的值，就是拿255减去现在的值
+//        ColorMatrix matrix = new ColorMatrix(new float[]{
+//                -1f, 0, 0, 0, 255,
+//                0, -1f, 0, 0, 255,
+//                0, 0, -1f, 0, 255,
+//                0, 0, 0, 1f, 0
+//        });
+</code></pre><p>得到的图片是<br> <img src="../img/paint_2_colormatrix_2.png" alt=""><br> <br><br>再来张黑白照，代码：</p>
+<pre><code>ColorMatrix matrix = new ColorMatrix(new float[]{
+                0.213f, 0.715f, 0.072f, 0, 0,
+                0.213f, 0.715f, 0.072f, 0, 0,
+                0.213f, 0.715f, 0.072f, 0, 0,
+                0, 0, 0, 1f, 0
+        });
+</code></pre><p>黑白照：<br> <img src="../img/paint_2_colormatrix_3.png" alt=""><br>来张复古照片：</p>
+<pre><code>ColorMatrix matrix = new ColorMatrix(new float[]{
+                1 / 2f, 1 / 2f, 1 / 2f, 0, 0,
+                1 / 3f, 1 / 3f, 1 / 3f, 0, 0,
+                1 / 4f, 1 / 4f, 1 / 4f, 0, 0,
+                0, 0, 0, 1f, 0,
+        });
+</code></pre><p><img src="../img/paint_2_colormatrix_4.png" alt="">           </p>
+<p>好了，ColorMatrix的矩阵变换就到这吧，继续看看其他的API。</p>
+<pre><code>setScale(float rScale, float gScale, float bScale, float aScale)
+rScale:就是我们那个4*5矩阵的变换的R的值
+其他的参数都类似，那么设置了这个函数后，其实我们得到的ColorMatrix是
+[rScale,0,0,0,0
+    0,gScale,0,0,0
+    0,0,bScale,0,0
+    0,0,0,aScale,0]
+
+setSaturation (float sat);//设置色彩的饱和度
+setRotate(int axis, float degrees);//设置色彩的旋转
+axis:是围绕那个色彩轴旋转，一共有RGB三个轴，0代表R轴，1代表G轴，2代表B轴
+degrees:是围绕这个轴旋转的角度
+</code></pre><p>上代码：</p>
+<pre><code>ColorMatrix matrix = new ColorMatrix();
+matrix.setRotate(0,120);
+</code></pre><p><img src="../img/paint_2_colormatrix_5.png" alt="">    </p>
+<h5 id="LightingColorFilter"><a href="#LightingColorFilter" class="headerlink" title="LightingColorFilter"></a>LightingColorFilter</h5><pre><code>LightingColorFilter的构造函数是由两个参数构成LightingColorFilter(int mul, int add),
+这个类就是提供一种相对简单的方式来操作颜色矩阵的变换其中，mul和add的意义可以有
+下面的公式得到：
+R&apos; = R * colorMultiply.R + colorAdd.R
+G&apos; = G * colorMultiply.G + colorAdd.G
+B&apos; = B * colorMultiply.B + colorAdd.B
+</code></pre><p>代码如下：</p>
+<pre><code>LightingColorFilter colorFilter = new LightingColorFilter(0xffffff,0xff00ff);
+mPaint.setColorFilter(colorFilter);
+canvas.translate(0, 400);
+canvas.drawBitmap(mBitmap, null, mRect, mPaint);
+</code></pre><p><img src="../img/paint_2_colormatrix_6.png" alt="">    </p>
+<h5 id="PorterDuffColorFilter"><a href="#PorterDuffColorFilter" class="headerlink" title="PorterDuffColorFilter"></a>PorterDuffColorFilter</h5><pre><code>关于PoterDuffColorFilter这个类，要学习这个类，必须要了解他的
+</code></pre><p> <img src="../img/paint_2_colormatrix_7.png" alt=""><br> <img src="../img/paint_2_colormatrix_8.png" alt="">           </p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/15/Paint的基础用法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -283,7 +1047,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-15T10:27:06+08:00">
                 2017-06-15
@@ -537,8 +1301,8 @@ baseLineY ＝ (metrics.bottom - metrics.top) / 2 - metrics.bottom + centerY;
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">1</span>
-                <span class="site-state-item-name">posts</span>
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">Artikel</span>
               </a>
             </div>
           
@@ -592,7 +1356,7 @@ baseLineY ＝ (metrics.bottom - metrics.top) / 2 - metrics.bottom + centerY;
 
 
 <div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">

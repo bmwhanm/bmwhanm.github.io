@@ -1,0 +1,793 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Paint的Gradient的用法shader的基本介绍shader是一个在绘制的过程中能够水平的平分颜色的一个基类，通过Shader的子类的实现 来给Paint设置Shader，设置过之后，绘制任何对象时都会带着这个Shader的颜色。 BitmapShader这是一个非常有用的类，下面我会介绍一些这个类的基本的用法，中间会包括一些 Shader的基本用法，都在这个介绍类的里面了，下面可 is">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Paint的Gradient的用法">
+<meta property="og:url" content="http://yoursite.com/2017/06/15/Paint的Gradient的用法/index.html">
+<meta property="og:site_name" content="bsdy">
+<meta property="og:description" content="Paint的Gradient的用法shader的基本介绍shader是一个在绘制的过程中能够水平的平分颜色的一个基类，通过Shader的子类的实现 来给Paint设置Shader，设置过之后，绘制任何对象时都会带着这个Shader的颜色。 BitmapShader这是一个非常有用的类，下面我会介绍一些这个类的基本的用法，中间会包括一些 Shader的基本用法，都在这个介绍类的里面了，下面可 is">
+<meta property="og:image" content="http://yoursite.com/img/paint_3_shader_1.png">
+<meta property="og:image" content="http://yoursite.com/img/paint_3_shader_2.png">
+<meta property="og:image" content="http://yoursite.com/img/paint_3_shader_3.png">
+<meta property="og:image" content="http://yoursite.com/img/paint_3_shader_4.png">
+<meta property="og:image" content="http://yoursite.com/img/paint_3_shader_5.png">
+<meta property="og:image" content="http://yoursite.com/img/paint_3_shader_6.png">
+<meta property="og:image" content="http://yoursite.com/img/paint_3_shader_7.png">
+<meta property="og:image" content="http://yoursite.com/img/paint_3_shader_8.png">
+<meta property="og:image" content="http://yoursite.com/img/paint_3_shader_9.png">
+<meta property="og:updated_time" content="2017-06-18T14:11:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Paint的Gradient的用法">
+<meta name="twitter:description" content="Paint的Gradient的用法shader的基本介绍shader是一个在绘制的过程中能够水平的平分颜色的一个基类，通过Shader的子类的实现 来给Paint设置Shader，设置过之后，绘制任何对象时都会带着这个Shader的颜色。 BitmapShader这是一个非常有用的类，下面我会介绍一些这个类的基本的用法，中间会包括一些 Shader的基本用法，都在这个介绍类的里面了，下面可 is">
+<meta name="twitter:image" content="http://yoursite.com/img/paint_3_shader_1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/06/15/Paint的Gradient的用法/"/>
+
+
+
+
+
+  <title>Paint的Gradient的用法 | bsdy</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">bsdy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/15/Paint的Gradient的用法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="bsdy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Paint的Gradient的用法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-15T13:53:17+08:00">
+                2017-06-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="Paint的Gradient的用法"><a href="#Paint的Gradient的用法" class="headerlink" title="Paint的Gradient的用法"></a>Paint的Gradient的用法</h4><h5 id="shader的基本介绍"><a href="#shader的基本介绍" class="headerlink" title="shader的基本介绍"></a>shader的基本介绍</h5><pre><code>shader是一个在绘制的过程中能够水平的平分颜色的一个基类，通过Shader的子类的实现
+来给Paint设置Shader，设置过之后，绘制任何对象时都会带着这个Shader的颜色。
+</code></pre><h5 id="BitmapShader"><a href="#BitmapShader" class="headerlink" title="BitmapShader"></a>BitmapShader</h5><pre><code>这是一个非常有用的类，下面我会介绍一些这个类的基本的用法，中间会包括一些
+Shader的基本用法，都在这个介绍类的里面了，下面可 is hi，我们首先看看这个类的
+构造函数，然后直接使用，看看会有什么奇妙的东西发生。这个Shader作为纹理被用来
+绘制Bitmap看看构造方法.
+</code></pre><ul>
+<li><p>REPEAT</p>
+<pre><code>mRect = new RectF(0,0,200,200);
+mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.girl);
+BitmapShader shader = new BitmapShader(mBitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+mPaint.setShader(shader);
+canvas.drawRect(0,0,getWidth(),getHeight() ,mPaint);
+</code></pre><p><img src="/img/paint_3_shader_1.png" alt=""><br><br></p>
+<pre><code>根据图片，我们看到绘制出来的不是单独的的一张照片，而是单张照片的重复，这就
+涉及到在上面的代码中，我们没有提到的Shader.TileMode这个内部类。这个类内
+部有三个值，分别是CLAMP，REPEAT，MIRROR。其中CLAMP代表的是重复绘制这个
+Shader的边缘的像素，当超出这个Shader的原始界限的时候，REPEAT就是重复，
+MIRROR就是镜像。这个三个值的不用多说，看看代码的效果就明白了。
+</code></pre><p>上代码：</p>
+</li>
+<li><p>CLAMP</p>
+<pre><code>mRect = new RectF(0,0,200,200);
+mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.girl);
+BitmapShader shader = new BitmapShader(mBitmap,Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+mPaint.setShader(shader);
+canvas.drawRect(0,0,getWidth(),getHeight() ,mPaint);
+</code></pre></li>
+</ul>
+<p><img src="/img/paint_3_shader_2.png" alt="这是CLAMP的效果"></p>
+<ul>
+<li><p>MIRROR</p>
+<pre><code>mRect = new RectF(0,0,200,200);
+mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.girl);
+BitmapShader shader = new BitmapShader(mBitmap,Shader.TileMode. MIRROR, Shader.TileMode. MIRROR);
+mPaint.setShader(shader);
+canvas.drawRect(0,0,getWidth(),getHeight() ,mPaint);
+</code></pre></li>
+</ul>
+<p><img src="/img/paint_3_shader_3.png" alt="这是CLAMP的效果"></p>
+<pre><code>解释一下构造方法：
+BitmapShader(Bitmap bitmap, Shader.TileMode tileX, Shader.TileMode tileY)
+bitmap：就是你给这个BitmapShader设置的图片
+tileX：就是当这个Shader超出这个图像的原始的边界的时候，给这个Shader设置的X轴方向的拉伸规则
+tileY：同理上面的tileX
+</code></pre><p><br></p>
+<h5 id="Matrix"><a href="#Matrix" class="headerlink" title="Matrix"></a>Matrix</h5><pre><code>下面再来一个比较有点意思的类，Matrix，矩阵。Matrix是一个为了转换坐标持有一个
+3*3的矩阵的一个类。因为这里是在Shader的知识里面，我们就介绍一点基本知识就行，
+Matrix的构造方法没什么要看的，大家一看就明白，分别是Matrix()，Matrix(Matrix src)
+然后看看他的setScale(float sx, float sy)方法，sx，sy分别表示X，Y轴的缩放比例。
+我们在Shader的setLocalMatrix (Matrix localM)里面会用到矩阵的变换，那么
+</code></pre><p>上代码：</p>
+<pre><code>BitmapShader shader = new BitmapShader(mBitmap, Shader.TileMode.MIRROR, Shader.TileMode.MIRROR);
+Matrix matrix = new Matrix();
+matrix.setScale(1.5f,0.5f);
+shader.setLocalMatrix(matrix);
+mPaint.setShader(shader);        
+canvas.drawRect(0,0,getWidth(),getHeight() ,mPaint);
+</code></pre><p><img src="/img/paint_3_shader_4.png" alt=""></p>
+<pre><code>从上面的图可以看出，X轴放大了1.5倍，Y轴缩小了0.5倍
+
+下面我们接着看看Matrix的其它方法setTranslate(float dx, float dy)，设置    矩阵沿着X，Y轴分别平移dx，dy。dx为正，图片就右移，反之左移，dy为正图片下移，
+反之上移
+</code></pre><p>上代码：</p>
+<pre><code>BitmapShader shader = new BitmapShader(mBitmap, Shader.TileMode.MIRROR, Shader.TileMode.MIRROR);
+Matrix matrix = new Matrix();
+matrix.setTranslate(50,50);
+shader.setLocalMatrix(matrix);
+mPaint.setShader(shader);        
+canvas.drawRect(0,0,getWidth(),getHeight() ,mPaint);
+</code></pre><p><img src="/img/paint_3_shader_5.png" alt=""></p>
+<pre><code>setRotate(float degrees),设置矩阵围绕着原点旋转degrees度。
+setSkew(float kx, float ky)，设置矩阵的X，Y方向的倾斜度。
+这两个方法，我就不运行了，大家自己试一下。
+好了，到这里我就把BitmapShader介绍的差不多了，也介绍了Shader的setLocalMatrix(matrix)方法
+顺便说了一点Matrix类，下面回归主题，看看其它的Shader的子类。
+</code></pre><h5 id="LinearGradient"><a href="#LinearGradient" class="headerlink" title="LinearGradient"></a>LinearGradient</h5><pre><code>线性渐变，比较简单，把构造方法弄明白就行了
+LinearGradient(float x0, float y0, float x1, float y1, int[] colors, float[] positions, Shader.TileMode tile)
+x0,y0,x1,y1 : 代表这个颜色变化的起点位置和终点位置
+colors: 是颜色的变化的范围
+positions ：是每个颜色的在总变化的范围所占的所有的值加起来等于1 。类似于权重,可以为null，为null的话就是每个颜色所占的比重相同
+tile：是这个图形的拉伸规则，参看BitmapShader
+</code></pre><p>上代码：</p>
+<pre><code>LinearGradient gradient = new LinearGradient(0,200,200,200,new int[]{Color.RED,Color.YELLOW,Color.GREEN},null, Shader.TileMode.CLAMP);
+mPaint.setShader(gradient);
+canvas.drawRect(0,0,getWidth(),getHeight(),mPaint);
+</code></pre><p><img src="/img/paint_3_shader_6.png" alt=""></p>
+<h5 id="RadialGradient"><a href="#RadialGradient" class="headerlink" title="RadialGradient"></a>RadialGradient</h5><pre><code>径向渐变，直接看
+RadialGradient(float centerX, float centerY, float radius, int[] colors, float[] stops, Shader.TileMode tileMode)
+centerX，centerY，radius，是画圆的三个要素，中心坐标加半径。
+colors：是颜色的变化范围
+stops：这个数组里面的数对应的是颜色的变化范围到什么位置停止，就是这个数组如果
+是｛0.1f,0.2f,0.3f｝,假设colors是｛Color.RED,Color.YELLOW,Color.GREEN｝
+那么红色的变化范围是0～0.1，黄色的变化0.1f~0.2f,绿色作为最后一个颜色，会自动
+填充到1.0f
+</code></pre><p>上代码：</p>
+<pre><code>RadialGradient gradient = new RadialGradient(200,200,100,new int[]{Color.RED,Color.YELLOW,Color.GREEN},new float[]{0.1f,0.2f,0.3f}, Shader.TileMode.REPEAT);
+mPaint.setShader(gradient);
+canvas.drawRect(0,0,getWidth(),getHeight(),mPaint);
+</code></pre><p><img src="/img/paint_3_shader_7.png" alt=""></p>
+<h5 id="SweepGradient"><a href="#SweepGradient" class="headerlink" title="SweepGradient"></a>SweepGradient</h5><pre><code>扫描渐变
+SweepGradient(float cx, float cy, int[] colors, float[] positions)
+cx：扫描渐变的中心点的X轴的坐标
+cy：扫描渐变的中心点的Y轴的坐标
+colors：渐变的颜色的范围
+position：渐变的颜色数组对应的渐变的位置
+</code></pre><p>上代码：</p>
+<pre><code>SweepGradient gradient = new SweepGradient(200,200,new int[]{Color.RED,Color.YELLOW,Color.GREEN,Color.CYAN},null);
+mPaint.setShader(gradient);
+canvas.drawCircle(200,200,100,mPaint);
+</code></pre><p><img src="/img/paint_3_shader_8.png" alt=""></p>
+<h5 id="ComposeShader"><a href="#ComposeShader" class="headerlink" title="ComposeShader"></a>ComposeShader</h5><pre><code>组合渐变，就是通过Xfermode或者PorterDuff.Mode的方式结合两种Shader，这个类
+的重点就在于结合的方式，具体的两个类，请大家参看我的其它文章。
+下面我们直接看一下代码
+
+BitmapShader bitmapShader = new BitmapShader(mBitmap, Shader.TileMode.MIRROR, Shader.TileMode.MIRROR);
+LinearGradient linearGradient = new LinearGradient(0,200,200,200,new int[]{Color.RED,Color.YELLOW,Color.GREEN},null, Shader.TileMode.CLAMP);
+ComposeShader composeShader = new ComposeShader(linearGradient, bitmapShader, PorterDuff.Mode.OVERLAY);
+mPaint.setShader(composeShader);
+canvas.drawRect(0, 0, getWidth(), getHeight(), mPaint);
+</code></pre><p><img src="/img/paint_3_shader_9.png" alt=""></p>
+<pre><code>好了，这篇文章就到此结束了。
+</code></pre>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/15/PathMeasure的基础用法/" rel="next" title="PathMeasure的基础用法">
+                <i class="fa fa-chevron-left"></i> PathMeasure的基础用法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="John Doe" />
+          <p class="site-author-name" itemprop="name">John Doe</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Paint的Gradient的用法"><span class="nav-number">1.</span> <span class="nav-text">Paint的Gradient的用法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#shader的基本介绍"><span class="nav-number">1.1.</span> <span class="nav-text">shader的基本介绍</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#BitmapShader"><span class="nav-number">1.2.</span> <span class="nav-text">BitmapShader</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Matrix"><span class="nav-number">1.3.</span> <span class="nav-text">Matrix</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#LinearGradient"><span class="nav-number">1.4.</span> <span class="nav-text">LinearGradient</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#RadialGradient"><span class="nav-number">1.5.</span> <span class="nav-text">RadialGradient</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SweepGradient"><span class="nav-number">1.6.</span> <span class="nav-text">SweepGradient</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ComposeShader"><span class="nav-number">1.7.</span> <span class="nav-text">ComposeShader</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
