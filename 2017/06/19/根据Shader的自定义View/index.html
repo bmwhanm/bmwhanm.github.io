@@ -93,25 +93,18 @@
 
 
 
-<meta name="description" content="Paint的用法_二ColorFilter的基础用法官方文档关于ColorFilter的介绍是，这个类可以被用于修改被Paint画出的每一个像素 的颜色。并且ColorFilter是一个虚类，不能被直接使用，那么我们就看看它有哪些子类 ColorMatrixColorFilter我们先来介绍第一个子类 ColorMatrixColorFilter，这个类是通过ColorMatrix来管 理颜色的矩">
+<meta name="description" content="根据Shader的自定义View和放大镜    前期学习了很多关于Paint的基础用法，重要用来做点什么，否则的话很快就会忘记 的，这篇文章就先来实现个简单的Shader的用法，下面还会再来一篇。     当我们在学习Shader的时候就看到了他的定义，Shader是用来在绘制的过程中把相应 的颜色绘制出来，比如说一张图片有很多的像素值，那么在用这个设置了BitmapShader的 Paint对象">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Paint的用法_二">
-<meta property="og:url" content="http://yoursite.com/2017/06/15/Paint的用法-二/index.html">
+<meta property="og:title" content="根据Shader的自定义View和放大镜">
+<meta property="og:url" content="http://yoursite.com/2017/06/19/根据Shader的自定义View/index.html">
 <meta property="og:site_name" content="bsdy">
-<meta property="og:description" content="Paint的用法_二ColorFilter的基础用法官方文档关于ColorFilter的介绍是，这个类可以被用于修改被Paint画出的每一个像素 的颜色。并且ColorFilter是一个虚类，不能被直接使用，那么我们就看看它有哪些子类 ColorMatrixColorFilter我们先来介绍第一个子类 ColorMatrixColorFilter，这个类是通过ColorMatrix来管 理颜色的矩">
-<meta property="og:image" content="http://yoursite.com/2017/06/15/img/paint_2_colormartix_1.png">
-<meta property="og:image" content="http://yoursite.com/2017/06/15/img/paint_2_colormatrix_2.png">
-<meta property="og:image" content="http://yoursite.com/2017/06/15/img/paint_2_colormatrix_3.png">
-<meta property="og:image" content="http://yoursite.com/2017/06/15/img/paint_2_colormatrix_4.png">
-<meta property="og:image" content="http://yoursite.com/2017/06/15/img/paint_2_colormatrix_5.png">
-<meta property="og:image" content="http://yoursite.com/2017/06/15/img/paint_2_colormatrix_6.png">
-<meta property="og:image" content="http://yoursite.com/2017/06/15/img/paint_2_colormatrix_7.png">
-<meta property="og:image" content="http://yoursite.com/2017/06/15/img/paint_2_colormatrix_8.png">
-<meta property="og:updated_time" content="2017-06-18T14:07:34.000Z">
+<meta property="og:description" content="根据Shader的自定义View和放大镜    前期学习了很多关于Paint的基础用法，重要用来做点什么，否则的话很快就会忘记 的，这篇文章就先来实现个简单的Shader的用法，下面还会再来一篇。     当我们在学习Shader的时候就看到了他的定义，Shader是用来在绘制的过程中把相应 的颜色绘制出来，比如说一张图片有很多的像素值，那么在用这个设置了BitmapShader的 Paint对象">
+<meta property="og:image" content="http://yoursite.com/2017/06/19/img/paint_4_shaderView_1.gif">
+<meta property="og:updated_time" content="2017-06-22T12:43:24.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Paint的用法_二">
-<meta name="twitter:description" content="Paint的用法_二ColorFilter的基础用法官方文档关于ColorFilter的介绍是，这个类可以被用于修改被Paint画出的每一个像素 的颜色。并且ColorFilter是一个虚类，不能被直接使用，那么我们就看看它有哪些子类 ColorMatrixColorFilter我们先来介绍第一个子类 ColorMatrixColorFilter，这个类是通过ColorMatrix来管 理颜色的矩">
-<meta name="twitter:image" content="http://yoursite.com/2017/06/15/img/paint_2_colormartix_1.png">
+<meta name="twitter:title" content="根据Shader的自定义View和放大镜">
+<meta name="twitter:description" content="根据Shader的自定义View和放大镜    前期学习了很多关于Paint的基础用法，重要用来做点什么，否则的话很快就会忘记 的，这篇文章就先来实现个简单的Shader的用法，下面还会再来一篇。     当我们在学习Shader的时候就看到了他的定义，Shader是用来在绘制的过程中把相应 的颜色绘制出来，比如说一张图片有很多的像素值，那么在用这个设置了BitmapShader的 Paint对象">
+<meta name="twitter:image" content="http://yoursite.com/2017/06/19/img/paint_4_shaderView_1.gif">
 
 
 
@@ -139,13 +132,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/06/15/Paint的用法-二/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/06/19/根据Shader的自定义View/"/>
 
 
 
 
 
-  <title>Paint的用法_二 | bsdy</title>
+  <title>根据Shader的自定义View和放大镜 | bsdy</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
@@ -265,7 +258,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/15/Paint的用法-二/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/19/根据Shader的自定义View/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -282,7 +275,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Paint的用法_二</h1>
+          <h1 class="post-title" itemprop="name headline">根据Shader的自定义View和放大镜</h1>
         
 
         <div class="post-meta">
@@ -294,8 +287,8 @@
               
                 <span class="post-meta-item-text">Veröffentlicht am</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-15T10:35:42+08:00">
-                2017-06-15
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-19T16:07:46+08:00">
+                2017-06-19
               </time>
             
 
@@ -329,94 +322,73 @@
       
 
       
-        <h4 id="Paint的用法-二"><a href="#Paint的用法-二" class="headerlink" title="Paint的用法_二"></a>Paint的用法_二</h4><h5 id="ColorFilter的基础用法"><a href="#ColorFilter的基础用法" class="headerlink" title="ColorFilter的基础用法"></a>ColorFilter的基础用法</h5><pre><code>官方文档关于ColorFilter的介绍是，这个类可以被用于修改被Paint画出的每一个像素
-的颜色。并且ColorFilter是一个虚类，不能被直接使用，那么我们就看看它有哪些子类
-</code></pre><h6 id="ColorMatrixColorFilter"><a href="#ColorMatrixColorFilter" class="headerlink" title="ColorMatrixColorFilter"></a>ColorMatrixColorFilter</h6><pre><code>我们先来介绍第一个子类 ColorMatrixColorFilter，这个类是通过ColorMatrix来管
-理颜色的矩阵变换的，一个像素是有ARGB是个颜色通道的值构成的。显示这些图片，首先要
-把这些值加载到内存中，修改像素值，需要一个4*5的ColorMatrix，我们在代码中修改这
-个float类型的矩阵，先来个例子，然后再慢慢解释。
-</code></pre><p>上代码：</p>
-<pre><code>//先画一张没有设置颜色矩阵的原图
-mPaint.setColorFilter(null);
-canvas.drawBitmap(mBitmap, null, mRect, mPaint);
-//色彩增强
-ColorMatrix matrix = new ColorMatrix(new float[]{
-        1.2f, 0, 0, 0, 0,
-        0, 1.2f, 0, 0, 0,
-        0, 0, 1.2f, 0, 0,
-        0, 0, 0, 1f, 0
-});
-mPaint.setColorFilter(new ColorMatrixColorFilter(matrix));
-canvas.translate(0, 400);
-canvas.drawBitmap(mBitmap, null, mRect, mPaint);
-</code></pre><p>上个图：<br> <img src="../img/paint_2_colormartix_1.png" alt=""></p>
-<pre><code>可从上面的图片对比可以看的出来，下面的图片的色彩比上面的更鲜艳，那么下面的每个像素点的值是怎么通过矩阵的运算得到的呢？这是我们的4*5的矩阵
-[ a, b, c, d, e,                [r
-  f, g, h, i, j,                  g
-  k, l, m, n, o,        *         b
-  p, q, r, s, t ]                 a]
-那么我们得到的颜色值为
-    R’ = a*R + b*G + c*B + d*A + e;
-    G’ = f*R + g*G + h*B + i*A + j;
-    B’ = k*R + l*G + m*B + n*A + o;
-    A’ = p*R + q*G + r*B + s*A + t;
-    根据这个公式，我们能够得到上面的矩阵计算，我们是分别把像素的RGB的值，全部乘
-    以1.2，所以得到的是色彩的增强。
-</code></pre><p>再来个反相变换，反相变换就是把相应的颜色值取反，就是拿255减去现在的值，根据这个结果，我们得到矩阵就是：</p>
-<pre><code>//全部取成相反的值，就是拿255减去现在的值
-//        ColorMatrix matrix = new ColorMatrix(new float[]{
-//                -1f, 0, 0, 0, 255,
-//                0, -1f, 0, 0, 255,
-//                0, 0, -1f, 0, 255,
-//                0, 0, 0, 1f, 0
-//        });
-</code></pre><p>得到的图片是<br> <img src="../img/paint_2_colormatrix_2.png" alt=""><br> <br><br>再来张黑白照，代码：</p>
-<pre><code>ColorMatrix matrix = new ColorMatrix(new float[]{
-                0.213f, 0.715f, 0.072f, 0, 0,
-                0.213f, 0.715f, 0.072f, 0, 0,
-                0.213f, 0.715f, 0.072f, 0, 0,
-                0, 0, 0, 1f, 0
-        });
-</code></pre><p>黑白照：<br> <img src="../img/paint_2_colormatrix_3.png" alt=""><br>来张复古照片：</p>
-<pre><code>ColorMatrix matrix = new ColorMatrix(new float[]{
-                1 / 2f, 1 / 2f, 1 / 2f, 0, 0,
-                1 / 3f, 1 / 3f, 1 / 3f, 0, 0,
-                1 / 4f, 1 / 4f, 1 / 4f, 0, 0,
-                0, 0, 0, 1f, 0,
-        });
-</code></pre><p><img src="../img/paint_2_colormatrix_4.png" alt="">           </p>
-<p>好了，ColorMatrix的矩阵变换就到这吧，继续看看其他的API。</p>
-<pre><code>setScale(float rScale, float gScale, float bScale, float aScale)
-rScale:就是我们那个4*5矩阵的变换的R的值
-其他的参数都类似，那么设置了这个函数后，其实我们得到的ColorMatrix是
-[rScale,0,0,0,0
-    0,gScale,0,0,0
-    0,0,bScale,0,0
-    0,0,0,aScale,0]
+        <h4 id="根据Shader的自定义View和放大镜"><a href="#根据Shader的自定义View和放大镜" class="headerlink" title="根据Shader的自定义View和放大镜"></a>根据Shader的自定义View和放大镜</h4><pre><code>    前期学习了很多关于Paint的基础用法，重要用来做点什么，否则的话很快就会忘记
+的，这篇文章就先来实现个简单的Shader的用法，下面还会再来一篇。
+    当我们在学习Shader的时候就看到了他的定义，Shader是用来在绘制的过程中把相应
+的颜色绘制出来，比如说一张图片有很多的像素值，那么在用这个设置了BitmapShader的
+Paint对象绘制任何图形的时候都会在相应的位置绘制出相应的像素。好了，我们理解了这
+一点那么接下来的工作就比较简单了。
+    先看效果
+</code></pre><p><img src="../img/paint_4_shaderView_1.gif" alt=""></p>
+<pre><code>    下面就看看该如何实现上面的效果，首先肯定是一张白色的背景图，然后监听我们手指
+的出触摸的位置，然后在相应的位置画个圆出来，那么问题就在于如何把这个图片相应的像
+素值设置给画笔，这时候就会用到我们的BitmapShader.
 
-setSaturation (float sat);//设置色彩的饱和度
-setRotate(int axis, float degrees);//设置色彩的旋转
-axis:是围绕那个色彩轴旋转，一共有RGB三个轴，0代表R轴，1代表G轴，2代表B轴
-degrees:是围绕这个轴旋转的角度
-</code></pre><p>上代码：</p>
-<pre><code>ColorMatrix matrix = new ColorMatrix();
-matrix.setRotate(0,120);
-</code></pre><p><img src="../img/paint_2_colormatrix_5.png" alt="">    </p>
-<h5 id="LightingColorFilter"><a href="#LightingColorFilter" class="headerlink" title="LightingColorFilter"></a>LightingColorFilter</h5><pre><code>LightingColorFilter的构造函数是由两个参数构成LightingColorFilter(int mul, int add),
-这个类就是提供一种相对简单的方式来操作颜色矩阵的变换其中，mul和add的意义可以有
-下面的公式得到：
-R&apos; = R * colorMultiply.R + colorAdd.R
-G&apos; = G * colorMultiply.G + colorAdd.G
-B&apos; = B * colorMultiply.B + colorAdd.B
-</code></pre><p>代码如下：</p>
-<pre><code>LightingColorFilter colorFilter = new LightingColorFilter(0xffffff,0xff00ff);
-mPaint.setColorFilter(colorFilter);
-canvas.translate(0, 400);
-canvas.drawBitmap(mBitmap, null, mRect, mPaint);
-</code></pre><p><img src="../img/paint_2_colormatrix_6.png" alt="">    </p>
-<h5 id="PorterDuffColorFilter"><a href="#PorterDuffColorFilter" class="headerlink" title="PorterDuffColorFilter"></a>PorterDuffColorFilter</h5><pre><code>关于PoterDuffColorFilter这个类，要学习这个类，必须要了解他的
-</code></pre><p> <img src="../img/paint_2_colormatrix_7.png" alt=""><br> <img src="../img/paint_2_colormatrix_8.png" alt="">           </p>
+public class PaintShaderView extends View {
+private Paint mPaint;
+private Bitmap mBitmap;
+private float dx,dy;
+public PaintShaderView(Context context) {
+    this(context,null);
+}
 
+public PaintShaderView(Context context, AttributeSet attrs) {
+    this(context, attrs,0);
+}
+
+public PaintShaderView(Context context, AttributeSet attrs, int defStyleAttr) {
+mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.girl);
+initPaint();
+}
+
+ private void initPaint() {
+    mPaint = new Paint();
+    mPaint.setAntiAlias(true);
+    mPaint.setDither(true);
+    mPaint.setStrokeWidth(5);
+}
+  @Override
+protected void onDraw(Canvas canvas) {
+    super.onDraw(canvas);
+    canvas.drawColor(Color.WHITE);
+    BitmapShader shader = new BitmapShader(mBitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+     mPaint.setShader(shader);
+     if(dx != 0 &amp;&amp; dy != 0)
+    canvas.drawCircle(dx,dy,150,mPaint);
+}
+@Override
+public boolean onTouchEvent(MotionEvent event) {
+    switch (event.getAction()){
+        case MotionEvent.ACTION_DOWN:
+            dx = 0;
+            dy = 0;
+            invalidate();
+            return  true;
+        case MotionEvent.ACTION_MOVE:
+            dx = event.getX();
+            dy = event.getY();
+            invalidate();
+            return true;
+        case MotionEvent.ACTION_UP:
+            dx = 0;
+            dy = 0;
+            break;
+    }
+    invalidate();
+    return super.onTouchEvent(event);
+}
+}
+</code></pre><h5 id="根据Shader制作放大器自定义View"><a href="#根据Shader制作放大器自定义View" class="headerlink" title="根据Shader制作放大器自定义View"></a>根据Shader制作放大器自定义View</h5>
       
     </div>
 
@@ -452,14 +424,18 @@ canvas.drawBitmap(mBitmap, null, mRect, mPaint);
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/06/15/Paint的Gradient的用法/" rel="next" title="Paint的Gradient的用法">
+                <i class="fa fa-chevron-left"></i> Paint的Gradient的用法
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/06/15/Canvas和Path的基础用法/" rel="prev" title="Canvas和Path的基础用法">
-                Canvas和Path的基础用法 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/06/24/Service的用法详解/" rel="prev" title="Service的用法详解">
+                Service的用法详解 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -571,7 +547,7 @@ canvas.drawBitmap(mBitmap, null, mRect, mPaint);
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Paint的用法-二"><span class="nav-number">1.</span> <span class="nav-text">Paint的用法_二</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ColorFilter的基础用法"><span class="nav-number">1.1.</span> <span class="nav-text">ColorFilter的基础用法</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#ColorMatrixColorFilter"><span class="nav-number">1.1.1.</span> <span class="nav-text">ColorMatrixColorFilter</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#LightingColorFilter"><span class="nav-number">1.2.</span> <span class="nav-text">LightingColorFilter</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#PorterDuffColorFilter"><span class="nav-number">1.3.</span> <span class="nav-text">PorterDuffColorFilter</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#根据Shader的自定义View和放大镜"><span class="nav-number">1.</span> <span class="nav-text">根据Shader的自定义View和放大镜</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#根据Shader制作放大器自定义View"><span class="nav-number">1.1.</span> <span class="nav-text">根据Shader制作放大器自定义View</span></a></li></ol></li></ol></div>
             
 
           </div>
