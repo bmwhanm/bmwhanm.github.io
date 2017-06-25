@@ -104,7 +104,9 @@
 <meta property="og:image" content="http://yoursite.com/2017/06/15/img/canvas_path_3.png">
 <meta property="og:image" content="http://yoursite.com/2017/06/15/img/canvas_path_4.png">
 <meta property="og:image" content="http://yoursite.com/2017/06/15/img/canvas_path_6.png">
-<meta property="og:updated_time" content="2017-06-23T16:34:35.000Z">
+<meta property="og:image" content="http://yoursite.com/2017/06/15/img/canvas_path_7.png">
+<meta property="og:image" content="http://yoursite.com/2017/06/15/img/canvas_path_8.png">
+<meta property="og:updated_time" content="2017-06-25T01:28:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Canvas和Path的基础用法">
 <meta name="twitter:description" content="Canvas和Path的基础用法   Canvas和Path是自定义View中非常重要的两个的类，Canvas是画布，就是我们在写 自定义View的时候需要绘制的各种东西。我们可以画各种形状，矩形，圆形，椭圆等等。 Path也是个非常强大的类，我们也可以通过Path，画出各种形状，矩形，椭圆等。Path还 涉及到一个比较重要的用法，可以画出贝塞尔曲线，我们可以利用这个画出各种动效。 Canvas的">
@@ -500,7 +502,73 @@ canvas.drawPath(mPath,mPaint);
 <pre><code>   根据上面的图，可以看到，mPath最终被连接起来了，并且连接的并不是mPath的第一
 个起始点，而是最后一个起始点，所以close()方法就是把Path的最后一个点和Path上的
 最后一个起始点之间连上一条线，构成一个封闭的图形。
-</code></pre><h5 id="简单的介绍一下贝塞尔曲线"><a href="#简单的介绍一下贝塞尔曲线" class="headerlink" title="简单的介绍一下贝塞尔曲线"></a>简单的介绍一下贝塞尔曲线</h5><pre><code>关于贝塞尔曲线的定义，我就不说了，大家自己去百度一下。
+</code></pre><h5 id="简单的介绍一下贝塞尔曲线"><a href="#简单的介绍一下贝塞尔曲线" class="headerlink" title="简单的介绍一下贝塞尔曲线"></a>简单的介绍一下贝塞尔曲线</h5><pre><code>    关于贝塞尔曲线的定义，我就不说了，大家自己去百度一下。下面就简单的说一下
+Path中简单的连接API，这里的API提供二阶贝塞尔和三阶贝塞尔曲线的连接方式。那么下
+面就看一下这些API
+quadTo(float x1, float y1, float x2, float y2);其中x1,x2代表在Path的上一个结束点到x2,y2之间连接的一条线的中间的控制点，控制点的坐标就是(x1,x2);
+rQuadTo(float dx1, float dy1, float dx2, float dy2);
+其中dx1,dy1,dx2,dy2,代表是相对Path的上一个结束点的相对的坐标，加入上一个结束
+点的坐标是(dx,dy),那么这个时候控制点的坐标是(dx+dx1,dy+dy1),Path的现在的结
+束点就是(dx+dx2,dy+dy2);简单来说这个就是想对上一个坐标点的相对坐标。
+</code></pre><p>上代码：</p>
+<pre><code>public class PathBaseView extends View {
+private Paint mPaint;
+private Path mPath;
+public PathBaseView(Context context) {
+    this(context,null);
+}
+
+public PathBaseView(Context context, AttributeSet attrs) {
+    this(context, attrs,0);
+}
+
+public PathBaseView(Context context, AttributeSet attrs, int defStyleAttr) {
+    super(context, attrs, defStyleAttr);
+    initPaint();
+    setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+}
+
+private void initPaint() {
+
+    mPaint = new Paint();
+    mPaint.setAntiAlias(true);
+    mPaint.setStyle(Paint.Style.STROKE);
+    mPaint.setStrokeWidth(5);
+    mPaint.setColor(Color.RED);
+    mRect = new RectF(0,0,200,200);
+    mPath = new Path();
+
+}
+@Override
+protected void onDraw(Canvas canvas) {
+    super.onDraw(canvas);
+     mPath.reset();
+    //二阶贝赛尔
+    //这里是绝对的坐标
+    mPath.moveTo(100,100);
+    mPath.quadTo(150,50,200,100);
+    mPath.quadTo(250,150,300,100);
+    //下面是相对坐标
+    //mPath.moveTo(100,100);
+   //mPath.rQuadTo(50,-50,100,0);
+   //mPath.rQuadTo(50,50,100,0);
+
+    canvas.drawPath(mPath,mPaint);
+}
+｝
+</code></pre><p>效果图：<br><img src="../img/canvas_path_7.png" alt="二阶贝塞尔曲线"></p>
+<pre><code>可以看出，上面是二阶贝塞尔曲线连接成的类似于正弦曲线。用到了绝对坐标和相对坐标。比较简单。下面看一下用三阶贝塞尔曲线。
+</code></pre><p>上代码：</p>
+<pre><code>//三阶贝塞尔
+mPath.reset();
+mPath.moveTo(100,100);
+mPath.cubicTo(150,50,250,150,300,100);
+//三阶贝塞尔选择相对的函数
+//mPath.moveTo(100,100);
+//mPath.rCubicTo(50,-50,150,50,200,0);
+canvas.drawPath(mPath,mPaint);
+</code></pre><p><img src="../img/canvas_path_8.png" alt="三阶贝塞尔曲线"></p>
+<pre><code>关于Path和Canvas的基础用法就写到这吧，下面会把这两个结合起来加上属性动画写个自定义View。
 </code></pre>
       
     </div>
