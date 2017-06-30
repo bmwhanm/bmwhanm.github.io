@@ -93,16 +93,13 @@
 
 
 
-<meta name="description" content="Service的用法详解   学习androidService一直都没总结过，这次来好好的总结一下，一个系列，希望能 够把IPC和Service能够总结清楚。Service 是一个可以在后台执行长时间运行操作而不 提供用户界面的应用组件。服务可由其他应用组件启动，而且即使用户切换到其他应用，服 务仍将在后台继续运行。 此外，组件可以绑定到服务，以与之进行交互，甚至是执行进程 间通信 (IPC)。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Service的用法详解">
-<meta property="og:url" content="http://yoursite.com/2017/06/24/Service的用法详解/index.html">
+<meta property="og:title" content="结合Path和Canvas，属性动画的自定义View">
+<meta property="og:url" content="http://yoursite.com/2017/06/29/结合Path和Canvas，属性动画的自定义View/index.html">
 <meta property="og:site_name" content="bsdy">
-<meta property="og:description" content="Service的用法详解   学习androidService一直都没总结过，这次来好好的总结一下，一个系列，希望能 够把IPC和Service能够总结清楚。Service 是一个可以在后台执行长时间运行操作而不 提供用户界面的应用组件。服务可由其他应用组件启动，而且即使用户切换到其他应用，服 务仍将在后台继续运行。 此外，组件可以绑定到服务，以与之进行交互，甚至是执行进程 间通信 (IPC)。">
-<meta property="og:updated_time" content="2017-06-27T06:24:43.000Z">
+<meta property="og:updated_time" content="2017-06-29T08:55:20.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Service的用法详解">
-<meta name="twitter:description" content="Service的用法详解   学习androidService一直都没总结过，这次来好好的总结一下，一个系列，希望能 够把IPC和Service能够总结清楚。Service 是一个可以在后台执行长时间运行操作而不 提供用户界面的应用组件。服务可由其他应用组件启动，而且即使用户切换到其他应用，服 务仍将在后台继续运行。 此外，组件可以绑定到服务，以与之进行交互，甚至是执行进程 间通信 (IPC)。">
+<meta name="twitter:title" content="结合Path和Canvas，属性动画的自定义View">
 
 
 
@@ -130,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/06/24/Service的用法详解/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/06/29/结合Path和Canvas，属性动画的自定义View/"/>
 
 
 
 
 
-  <title>Service的用法详解 | bsdy</title>
+  <title>结合Path和Canvas，属性动画的自定义View | bsdy</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
@@ -256,7 +253,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/24/Service的用法详解/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/29/结合Path和Canvas，属性动画的自定义View/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -273,7 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Service的用法详解</h1>
+          <h1 class="post-title" itemprop="name headline">结合Path和Canvas，属性动画的自定义View</h1>
         
 
         <div class="post-meta">
@@ -285,8 +282,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-24T00:49:43+08:00">
-                2017-06-24
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-29T16:55:20+08:00">
+                2017-06-29
               </time>
             
 
@@ -320,15 +317,7 @@
       
 
       
-        <h4 id="Service的用法详解"><a href="#Service的用法详解" class="headerlink" title="Service的用法详解"></a>Service的用法详解</h4><pre><code>   学习androidService一直都没总结过，这次来好好的总结一下，一个系列，希望能
-够把IPC和Service能够总结清楚。Service 是一个可以在后台执行长时间运行操作而不
-提供用户界面的应用组件。服务可由其他应用组件启动，而且即使用户切换到其他应用，服
-务仍将在后台继续运行。 此外，组件可以绑定到服务，以与之进行交互，甚至是执行进程
-间通信 (IPC)。 例如，服务可以处理网络事务、播放音乐，执行文件 I/O 或与内容提
-供程序交互，而所有这一切均可在后台进行。
-   Service是android的四大组件之一，跟Activity一样，来看一下启动服务，绑定服务下的生命周期。
-</code></pre><h5 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h5><pre><code>当应用组件（如 Activity）通过调用 startService() 启动服务时，服务即处于“启动”状态。一旦启动，服务即可在后台无限期运行，即使启动服务的组件已被销毁也不受影响。 已启动的服务通常是执行单一操作，而且不会将结果返回给调用方。例如，它可能通过网络下载或上传文件。 操作完成后，服务会自行停止运行。
-</code></pre>
+        
       
     </div>
 
@@ -364,8 +353,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/19/根据Shader的自定义View/" rel="next" title="根据Shader的自定义View和放大镜">
-                <i class="fa fa-chevron-left"></i> 根据Shader的自定义View和放大镜
+              <a href="/2017/06/29/ipc的基础用法二/" rel="next" title="ipc的基础用法二">
+                <i class="fa fa-chevron-left"></i> ipc的基础用法二
               </a>
             
           </div>
@@ -373,10 +362,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/06/24/IPC用法/" rel="prev" title="IPC用法">
-                IPC用法 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -423,17 +408,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -477,22 +453,6 @@
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Service的用法详解"><span class="nav-number">1.</span> <span class="nav-text">Service的用法详解</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#启动服务"><span class="nav-number">1.1.</span> <span class="nav-text">启动服务</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       

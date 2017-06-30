@@ -93,13 +93,21 @@
 
 
 
+<meta name="description" content="IPC的用法的学习    这篇文章来小结一下自己学的IPC的知识，包括Messenger和AIDL，然后我在总结一 下自己最近学的关于Binder的知识。      在了解IPC前先说明一下什么是进程什么是线程，按照操作系统中的描述，线程是CPU  调度的最小单元，同时线程是一种有限的系统资源，而进程一般指一个执行单元，在  android指一个应用。一个进程可以包含多个线程，因此进程和线程是包含">
 <meta property="og:type" content="article">
 <meta property="og:title" content="IPC用法">
 <meta property="og:url" content="http://yoursite.com/2017/06/24/IPC用法/index.html">
 <meta property="og:site_name" content="bsdy">
-<meta property="og:updated_time" content="2017-06-23T16:51:34.000Z">
+<meta property="og:description" content="IPC的用法的学习    这篇文章来小结一下自己学的IPC的知识，包括Messenger和AIDL，然后我在总结一 下自己最近学的关于Binder的知识。      在了解IPC前先说明一下什么是进程什么是线程，按照操作系统中的描述，线程是CPU  调度的最小单元，同时线程是一种有限的系统资源，而进程一般指一个执行单元，在  android指一个应用。一个进程可以包含多个线程，因此进程和线程是包含">
+<meta property="og:image" content="http://yoursite.com/2017/06/24/img/ipc_1.png">
+<meta property="og:image" content="http://yoursite.com/2017/06/24/img/ipc_2.png">
+<meta property="og:image" content="http://yoursite.com/2017/06/24/img/ipc_aidl_4.png">
+<meta property="og:image" content="http://yoursite.com/2017/06/24/img/ipc_aidl_5.png">
+<meta property="og:updated_time" content="2017-06-28T14:10:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="IPC用法">
+<meta name="twitter:description" content="IPC的用法的学习    这篇文章来小结一下自己学的IPC的知识，包括Messenger和AIDL，然后我在总结一 下自己最近学的关于Binder的知识。      在了解IPC前先说明一下什么是进程什么是线程，按照操作系统中的描述，线程是CPU  调度的最小单元，同时线程是一种有限的系统资源，而进程一般指一个执行单元，在  android指一个应用。一个进程可以包含多个线程，因此进程和线程是包含">
+<meta name="twitter:image" content="http://yoursite.com/2017/06/24/img/ipc_1.png">
 
 
 
@@ -200,7 +208,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Startseite
+            Home
           </a>
         </li>
       
@@ -210,7 +218,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archiv
+            Archives
           </a>
         </li>
       
@@ -280,7 +288,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-24T00:51:34+08:00">
                 2017-06-24
@@ -317,7 +325,410 @@
       
 
       
-        
+        <h4 id="IPC的用法的学习"><a href="#IPC的用法的学习" class="headerlink" title="IPC的用法的学习"></a>IPC的用法的学习</h4><pre><code>    这篇文章来小结一下自己学的IPC的知识，包括Messenger和AIDL，然后我在总结一
+下自己最近学的关于Binder的知识。
+
+    在了解IPC前先说明一下什么是进程什么是线程，按照操作系统中的描述，线程是CPU
+ 调度的最小单元，同时线程是一种有限的系统资源，而进程一般指一个执行单元，在
+ android指一个应用。一个进程可以包含多个线程，因此进程和线程是包含与被包含的关
+ 系，在最简单的情况下，一个进程中可以只有一个线程即主线程，在android中主线程也
+ 叫UI线程，在UI线程里面才能操作界面元素。IPC(进程间通信)是主要用于两个进程，有
+ 时候我们需要在应用间（即两个进程间）交换数据，这时候就需要IPC。实现进程间通信有
+ 很多方式，我这里就只介绍Messenger和AIDL，至于其它的方式我就不介绍了。
+</code></pre><h5 id="Messenger"><a href="#Messenger" class="headerlink" title="Messenger"></a>Messenger</h5><pre><code>   Messenger就是对Binder做了一个简单的封装，我们在做一些简单的跨进程通信的时
+候可以使用Messenger，比AILDL简单。首先看一下构造方法
+
+   Messenger(Handler target);//用一个Handler创造一个Messenger实例，当有
+一个新的Message发送到这个Messenger的时候，这个Messenger就回调用它的
+handler.sendMessage(),这个时候这个Message就会被这个Handler所处理。里面具
+体的怎么跨进程的就留到总结Binder的时候再细说，这里就需要理解到这个时候就会调用
+远程进程的那个Handler。
+
+   Messenger(IBinder target);//用一个IBinder对象来构建一个Messenger实
+例，这个Messnegr就会关联到这个IBinder对象的Handler，向这个Messenger发送
+Message的时候就会让对应的Handler来处理，这个主要用来在客户端构造服务端的
+Messenger对象时调用。
+
+下面来个简单的例子：
+</code></pre><p>上代码：</p>
+<pre><code>//服务端
+public class MessengerService extends Service {
+    public static final int  SAY_HELLO =1;
+    class MessengerHandler  extends Handler{
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case SAY_HELLO:
+                    Bundle data = msg.getData();
+                    String str = data.getString(&quot;data&quot;);
+                    Log.e(&quot;TAG&quot;,&quot;MessengerService Received say_hello: &quot;+str);
+
+                    break;
+            }
+        }
+    }
+    private Messenger mMessenger = new Messenger(new MessengerHandler());
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        // TODO: Return the communication channel to the service.
+        return mMessenger.getBinder();
+    }
+
+}
+//客户端
+ private ServiceConnection mConn = new ServiceConnection() {
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        mMessenger = new Messenger(service);
+        Message msg = Message.obtain(null,MessengerService.SAY_HELLO);
+        Bundle data = new Bundle();
+        data.putString(&quot;data&quot;,&quot;Hello from Client&quot;);
+        msg.setData(data);
+        try {
+            mMessenger.send(msg);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        mBond = true;
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+        mBond = false;
+    }
+};
+看一下服务端的打印
+</code></pre><p><img src="../img/ipc_1.png" alt=""></p>
+<pre><code>上面只是客户端向服务端传递数据，那么服务端向客户端传递数据的原理是一样的，首先需
+要创建一个客户端的Messenger的实例，然后丢给发送到服务端的Message的replyTo字
+段，服务端去的这个字端就是拿到了客户端的Messenger，就可以向客户端发送数据了。下
+面看一下更改后的代码：
+
+
+//客户端
+class ClientHandler extends Handler{
+    @Override
+    public void handleMessage(Message msg) {
+        super.handleMessage(msg);
+        switch (msg.what){
+            case 1:
+                Bundle data = msg.getData();
+                String str = data.getString(&quot;data&quot;);
+                Log.e(&quot;TAG&quot;,&quot;客户端已经收到服务端的信息&quot;+str);
+            break;
+        }
+    }
+}
+private Messenger mClient = new Messenger(new ClientHandler());
+private ServiceConnection mConn = new ServiceConnection() {
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        mMessenger = new Messenger(service);
+        Message msg = Message.obtain(null,MessengerService.SAY_HELLO);
+        Bundle data = new Bundle();
+        data.putString(&quot;data&quot;,&quot;Hello from Client&quot;);
+        msg.setData(data);
+        msg.replyTo = mClient;
+        try {
+            mMessenger.send(msg);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        mBond = true;
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+        mBond = false;
+    }
+};
+//服务端的代码
+public class MessengerService extends Service {
+public static final int  SAY_HELLO =1;
+class MessengerHandler  extends Handler{
+    @Override
+    public void handleMessage(Message msg) {
+        super.handleMessage(msg);
+        switch (msg.what){
+            case SAY_HELLO:
+                Bundle data = msg.getData();
+                String str = data.getString(&quot;data&quot;);
+                Log.e(&quot;TAG&quot;,&quot;MessengerService Received say_hello: &quot;+str);
+
+                Messenger mClient = msg.replyTo;
+                Message mMsgClient = new Message();
+                mMsgClient.what = 1;
+                Bundle bun = new Bundle();
+                bun.putString(&quot;data&quot;,&quot;服务端已经收到你的消息，稍后会回复你的....&quot;);
+                mMsgClient.setData(bun);
+                try {
+                    mClient.send(mMsgClient);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
+    }
+}
+private Messenger mMessenger = new Messenger(new MessengerHandler());
+
+@Override
+public IBinder onBind(Intent intent) {
+    // TODO: Return the communication channel to the service.
+    return mMessenger.getBinder();
+}
+
+}
+</code></pre><p><img src="../img/ipc_2.png" alt=""></p>
+<h5 id="AIDL（Android-接口定义语言）"><a href="#AIDL（Android-接口定义语言）" class="headerlink" title="AIDL（Android 接口定义语言）"></a>AIDL（Android 接口定义语言）</h5><ul>
+<li><p>定义 AIDL 接口</p>
+<pre><code>当每次新建一个aidl文件时，Android SDK 工具都会生成一个基于该 .aidl 文件的 IBinder 接口，并将其保存在项目的 gen/ 目录中。服务必须视情况实现 IBinder 接口。然后客户端应用便可绑定到该服务，并调用 IBinder 中的方法来执行 IPC。一般创建一个aidl服务执行下面的步骤：
+1.创建 .aidl 文件
+2.实现接口
+    Android SDK 工具基于您的 .aidl 文件，使用 Java 编程语言生成一个接
+    口。此接口具有一个名为 Stub 的内部抽象类，用于扩展 Binder 类并实现 
+    AIDL 接口中的方法。您必须扩展 Stub 类并实现方法。
+3.向客户端公开该接口
+    实现 Service 并重写 onBind() 以返回 Stub 类的实现。
+</code></pre></li>
+</ul>
+<p>上代码：</p>
+<pre><code>//新建AIDL文件
+// First.aidl
+package com.hq.demo.aidltest;
+
+// Declare any non-default types here with import statements
+
+interface First {
+    /**
+     * Demonstrates some basic types that you can use as parameters
+     * and return values in AIDL.
+     */
+    void basicTypes(int anInt, long aLong, boolean aBoolean, float aFloat,
+            double aDouble, String aString);
+
+    String getStringFromClient(in String str);
+}
+
+//服务端的代码，实现其Stub类
+public class FirstAidlService extends Service {
+private FirstBinder mBinder;
+@Override
+public void onCreate() {
+    super.onCreate();
+    mBinder = new FirstBinder();
+}
+
+public FirstAidlService() {
+}
+
+@Override
+public IBinder onBind(Intent intent) {
+    // TODO: Return the communication channel to the service.
+    return mBinder;
+}
+
+
+class FirstBinder extends First.Stub{
+
+    @Override
+    public void basicTypes(int anInt, long aLong, boolean aBoolean, float aFloat, double aDouble, String aString) throws RemoteException {
+
+    }
+
+    @Override
+    public String getStringFromClient(String str) throws RemoteException {
+        return &quot;String from Server    &quot;+str ;
+    }
+}
+}
+
+ //客户端绑定服务时需要的ServiceConnection
+ private ServiceConnection mConn = new ServiceConnection() {
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        mBinder = First.Stub.asInterface(service);//获得服务端的Binder对象，并将其转换成为First类，此时客户端就可以调用服务端的代码了，实现跨进程访问
+        mBond = true;
+        try {
+            String str = mBinder.getStringFromClient(&quot;Client to Server&quot;);
+            Log.e(&quot;TAG&quot;,&quot;Client : &quot;+str);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+        mBond = false;
+    }
+};
+</code></pre><p>看下日志：<br><img src="../img/ipc_aidl_4.png" alt=""></p>
+<pre><code>客户端和服务端实现了跨进程调用，这是最简单的跨进程调用，我们客户端只是向服务端传递了一个字符串，并且服务端返回了一个字符串，下面就了解一下AIDL跨进程调用能够传递哪些数据。
+</code></pre><ul>
+<li><p>通过 IPC 传递对象</p>
+<pre><code>默认情况下，AIDL 支持下列数据类型：
+Java 编程语言中的所有原语类型（如 int、long、char、boolean 等等），
+String
+CharSequence
+
+List
+List 中的所有元素都必须是以上列表中支持的数据类型、其他 AIDL 生成的接口或
+您声明的可打包类型。 可选择将 List 用作“通用”类（例如，List&lt;String&gt;）。
+另一端实际接收的具体类始终是 ArrayList，但生成的方法使用的是 List 接口。
+
+Map
+Map 中的所有元素都必须是以上列表中支持的数据类型、其他 AIDL 生成的接口或您
+声明的可打包类型。 不支持通用 Map（如 Map&lt;String,Integer&gt; 形式的 
+Map）。 另一端实际接收的具体类始终是 HashMap，但生成的方法使用的是 Map 接
+口。
+
+上面是基本的类型，通过 IPC 接口把某个类从一个进程发送到另一个进程是可以实现的。 不过，您必须确保该类的代码对 IPC 通道的另一端可用，并且该类必须支持 Parcelable 接口。因为是跨进程这个对象在两个进程中的包名都必须是一样的，因为在不同的进程，就是不同的对象，程序需要把另一个进程传递过来的对象，实例化为本进程的可识别的对象。把需要传递的对象实现Parcelable接口，并且要定义成.aidl接口的形式，
+在写aidl文件的时候必须为每个附加类型加入一个import语句，即使这些类型与你定义的aidl的接口在同一个包中。还有一点就是在写aidl方法时，如果方法的参数类型时非源语，那么就必须要加上指示数据走向的方向标记，可以是in，out，inout，原语默认是in，不能是其它方向，
+
+注意：您应该将方向限定为真正需要的方向，因为编组参数的开销极大。
+</code></pre></li>
+</ul>
+<p>上代码：</p>
+<pre><code>// First.aidl
+package com.hq.demo.aidltest;
+import com.hq.demo.aidltest.Book;    
+interface First {
+    /**
+     * Demonstrates some basic types that you can use as parameters
+     * and return values in AIDL.
+     */
+    void basicTypes(int anInt, long aLong, boolean aBoolean, float aFloat,
+            double aDouble, String aString);
+
+    String getStringFromClient(String str);
+    Book addBook(in Book book);
+    List&lt;Book&gt; getBookList();
+}
+
+//服务端
+public class FirstAidlService extends Service {
+    private FirstBinder mBinder;
+    //因为通过Binder类调用服务端的方法，改方法会执行在Binder线程池里面，不是
+    //主线程，所以需要关注线程间的同步问题。而CopyOnWriteArrayList已经帮我
+    //们实现了线程同步的问题。
+    private CopyOnWriteArrayList&lt;Book&gt; mData;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        mData = new CopyOnWriteArrayList&lt;&gt;();
+        Book b1 = new Book();
+        b1.setmBookName(&quot;book1&quot;);
+        b1.setmPrice(1.0f);
+        Book b2 = new Book();
+        b2.setmBookName(&quot;book2&quot;);
+        b2.setmPrice(2.0f);
+        mData.add(b1);
+        mData.add(b2);
+        mBinder = new FirstBinder();
+    }
+
+    public FirstAidlService() {
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        // TODO: Return the communication channel to the service.
+        return mBinder;
+    }
+
+    //实现First.Stub 接口，实现里面的方法，在onBind()里面返回相应的Binder类，
+    class FirstBinder extends First.Stub{
+        @Override
+        public void basicTypes(int anInt, long aLong, boolean aBoolean, float aFloat, double aDouble, String aString) throws RemoteException {
+
+        }
+
+        @Override
+        public String getStringFromClient(String str) throws RemoteException {
+            return &quot;String from Server    &quot;+str ;
+        }
+
+        @Override
+        public Book addBook(Book book){
+            Book book1 = new Book();
+            Log.e(&quot;TAG&quot;,&quot;Server addBook from Client Book:&quot;+book);
+            book1.setmBookName(&quot;ServerBookName&quot;);
+            book1.setmPrice(10.2f);
+            mData.add(book);
+            return book1;
+        }
+
+        @Override
+        public List&lt;Book&gt; getBookList() throws RemoteException {
+            return mData;
+        }
+
+    }
+
+}
+// 客户端代码
+private ServiceConnection mConn = new ServiceConnection() {
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        mBinder = First.Stub.asInterface(service);//获得服务端的Binder接口
+        mBond = true;
+        try {
+            String str = mBinder.getStringFromClient(&quot;Client to Server&quot;);
+            Log.e(&quot;TAG&quot;,&quot;Client : &quot;+str);
+            Book b = new Book();
+            b.setmBookName(&quot;Client Book&quot;);
+            b.setmPrice(9.1f);
+            //通过Binder调用服务端的方法
+            Book book = mBinder.addBook(b);
+            Log.e(&quot;TAG&quot;, &quot;AIDL Base addBook(): &quot; + book);
+
+            List&lt;Book&gt; books  = mBinder.getBookList();
+            Log.e(&quot;TAG&quot;,books.toString());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+        mBond = false;
+    }
+}
+</code></pre><p><img src="../img/ipc_aidl_5.png" alt=""></p>
+<pre><code>接下来，简单介绍两个很重要的方法，linkToDeath()和unlinkToDeath();我们知道，Binder运行在服务端的进程中，如果服务端进程由于某种原因异常终止，这个时候如果我们还在调用服务端的方法，这就会导致调用失败，这个时候急需要用到linkToDeath();当Binder死亡的时候我们就会收到相应的通知。
+</code></pre><p>上代码：</p>
+<pre><code> private IBinder.DeathRecipient mRecipient = new IBinder.DeathRecipient() {
+    @Override
+    public void binderDied() {
+        Log.e(&quot;TAG&quot;,&quot;mRecipient binderDied&quot;);
+        if(mBinder == null)
+            return;
+        mBinder.asBinder().unlinkToDeath(mRecipient,0);
+        mBinder = null;
+       //下面可以做重新绑定的操作
+    }
+};
+
+
+ @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        mBinder = First.Stub.asInterface(service);
+        mBond = true;
+        try {
+        ........
+            service.linkToDeath(mRecipient,0);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+       上面就实现了当服务端的进程异常终止时，所要回调的方法，并且可以执行重新
+   绑定服务的操作。
+</code></pre><p>  这篇文章就到这吧，太长了，接下来还会继续介绍AIDL和Binder相关的知识点。</p>
+
       
     </div>
 
@@ -362,6 +773,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/29/ipc的基础用法二/" rel="prev" title="ipc的基础用法二">
+                ipc的基础用法二 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -408,8 +823,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -424,8 +848,8 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">7</span>
-                <span class="site-state-item-name">Artikel</span>
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">posts</span>
               </a>
             </div>
           
@@ -454,6 +878,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#IPC的用法的学习"><span class="nav-number">1.</span> <span class="nav-text">IPC的用法的学习</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Messenger"><span class="nav-number">1.1.</span> <span class="nav-text">Messenger</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AIDL（Android-接口定义语言）"><span class="nav-number">1.2.</span> <span class="nav-text">AIDL（Android 接口定义语言）</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -479,7 +919,7 @@
 
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">
